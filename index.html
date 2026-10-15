@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Website Tester</title>
+  <style>
+    :root { --bg: #f6f7f9; --card: #fff; --ink: #1d2330; --muted: #667085; --line: #e4e7ec; --accent: #2f6b4f; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #14171c; --card: #1d2128; --ink: #e7eaf0; --muted: #98a2b3; --line: #2c323c; --accent: #6fbf95; } }
+    body { margin: 0; font: 16px/1.55 system-ui, -apple-system, Segoe UI, sans-serif; background: var(--bg); color: var(--ink); }
+    main { max-width: 820px; margin: 0 auto; padding: 40px 16px 60px; }
+    h1 { margin: 0 0 6px; } p.lead { color: var(--muted); margin-top: 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 26px 0; }
+    a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; color: inherit; text-decoration: none; }
+    a.card:hover { border-color: var(--accent); }
+    a.card b { display: block; font-size: 1.1rem; color: var(--accent); margin-bottom: 4px; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 12px; overflow: hidden; }
+    th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Build It. Break It. Fix It. — AI Website Tester</h1>
+  <p class="lead">A bookshop website plus an AI-powered tester that opens it in a real browser, clicks buttons, fills forms, finds bugs and explains how to fix them.</p>
+
+  <div class="grid">
+    <a class="card" href="website/index.html"><b>📚 Open the website</b>Page &amp; Pine Books: shop, search, filters, cart, checkout, contact</a>
+    <a class="card" href="reports/comparison.html"><b>📊 Before vs after</b>Which bugs the tester found and which disappeared after the fix</a>
+    <a class="card" href="reports/1-before-fix/report.html"><b>🐞 Report: buggy site</b>5 findings with screenshots and AI explanations</a>
+    <a class="card" href="reports/2-after-fix/report.html"><b>✅ Report: fixed site</b>Same tests after fixing: 0 findings</a>
+  </div>
+
+  <table>
+    <tr><th>#</th><th>Intentional bug</th><th>Found by</th></tr>
+    <tr><td>1</td><td>Footer link "Contact us" → contacts.html (404)</td><td>link checker</td></tr>
+    <tr><td>2</td><td>Search button throws a TypeError</td><td>button/form test + JS error capture</td></tr>
+    <tr><td>3</td><td>Checkout accepts "not-an-email"</td><td>form test with invalid data</td></tr>
+    <tr><td>4</td><td>Cart total adds shipping twice</td><td>totals check, confirmed by AI review</td></tr>
+  </table>
+
+  <p>Code and instructions: <a href="https://github.com/gougoweg-wq/ai-website-tester">github.com/gougoweg-wq/ai-website-tester</a></p>
+</main>
+</body>
+</html>
