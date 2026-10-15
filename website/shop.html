@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop · Page &amp; Pine Books</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">📚 Page &amp; Pine</a>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="cart.html">Cart <span class="badge" id="cart-count">0</span></a></li>
+      <li><a href="checkout.html">Checkout</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h1>Shop</h1>
+  <div class="toolbar">
+    <form id="search-form" role="search">
+      <input type="search" id="search" name="search" placeholder="Search title or author" aria-label="Search books">
+      <button class="btn" type="submit">Search</button>
+    </form>
+    <label>Genre
+      <select id="genre" aria-label="Filter by genre">
+        <option value="all">All genres</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Sci-Fi">Sci-Fi</option>
+        <option value="Science">Science</option>
+        <option value="Cooking">Cooking</option>
+      </select>
+    </label>
+    <label>Sort
+      <select id="sort" aria-label="Sort books">
+        <option value="featured">Featured</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="title">Title A–Z</option>
+      </select>
+    </label>
+  </div>
+  <p class="result-count" id="result-count"></p>
+  <div class="grid" id="book-grid"></div>
+</main>
+<footer>
+  <p>© 2026 Page &amp; Pine Books · Student project</p>
+  <p><a href="shop.html">Browse books</a><a href="contact.html">Contact us</a><a href="index.html#top-picks">Top picks</a></p>
+</footer>
+<script src="js/cart.js"></script>
+<script src="js/shop.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Before vs After</title><style>
+:root { --bg:#f6f7f9; --card:#fff; --ink:#1d2330; --muted:#667085; --line:#e4e7ec;
+  --high:#c62828; --medium:#e08a00; --low:#3b6fd6; --pass:#2e7d32; }
+@media (prefers-color-scheme: dark) { :root { --bg:#14171c; --card:#1d2128; --ink:#e7eaf0; --muted:#98a2b3; --line:#2c323c; } }
+* { box-sizing:border-box } body { margin:0; font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; background:var(--bg); color:var(--ink) }
+.wrap { max-width:1100px; margin:0 auto; padding:24px 16px 60px } h1 { margin:0 0 4px } .muted { color:var(--muted) }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:20px 0 }
+.stat { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px }
+.stat b { display:block; font-size:1.8rem } .finding { background:var(--card); border:1px solid var(--line);
+  border-left:6px solid var(--muted); border-radius:10px; padding:16px 18px; margin:16px 0 }
+.finding.high { border-left-color:var(--high) } .finding.medium { border-left-color:var(--medium) } .finding.low { border-left-color:var(--low) }
+.sev { display:inline-block; color:#fff; border-radius:4px; padding:0 8px; font-size:.8rem; text-transform:uppercase; margin-right:6px }
+.sev.high { background:var(--high) } .sev.medium { background:var(--medium) } .sev.low { background:var(--low) }
+.finding h3 { margin:6px 0 } .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px }
+@media (max-width:760px) { .grid2 { grid-template-columns:1fr } }
+.ai { background:color-mix(in srgb, var(--low) 8%, var(--card)); border-radius:8px; padding:10px 14px }
+pre { background:#0f1218; color:#e6edf3; padding:10px; border-radius:6px; overflow:auto; font-size:.85rem; white-space:pre-wrap }
+figure { margin:0 } figure img { width:100%; border:1px solid var(--line); border-radius:6px } figcaption { font-size:.85rem; color:var(--muted) }
+.shots { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; margin-top:10px }
+table { width:100%; border-collapse:collapse; background:var(--card); font-size:.88rem } th,td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top }
+.r-pass { color:var(--pass); font-weight:600 } .r-FAIL { color:var(--high); font-weight:700 } .r-skip { color:var(--muted) }
+.table-wrap { overflow-x:auto } details summary { cursor:pointer; font-weight:600; margin:18px 0 8px } video { width:100%; border-radius:8px }
+.tag { font-size:.8rem; border:1px solid var(--line); border-radius:4px; padding:0 6px; color:var(--muted) }
+</style></head>
+<body><div class="wrap"><h1>Before vs after fixing the bugs</h1>
+<p class="muted">Before: <a href="1-before-fix/report.html">1-before-fix</a> (2026-10-15T14:20:43) ·
+ After: <a href="2-after-fix/report.html">2-after-fix</a> (2026-10-15T14:36:58)</p>
+<div class="cards"><div class="stat"><b>5</b>findings before</div><div class="stat"><b>0</b>findings after</div>
+<div class="stat"><b style="color:var(--pass)">5</b>fixed</div>
+<div class="stat"><b>7 → 0</b>failed checks (58 → 56 checks)</div></div>
+<div class="table-wrap"><table><tr><th>Status</th><th>Severity</th><th>Page</th><th>Finding</th></tr>
+<tr><td>✅ Fixed</td><td><span class="sev high">high</span></td><td>/shop.html</td><td>Search does not work — submitting it throws a JavaScript error</td></tr>
+<tr><td>✅ Fixed</td><td><span class="sev high">high</span></td><td>/cart.html</td><td>Order total is wrong: shows $22.97, expected $17.98</td></tr>
+<tr><td>✅ Fixed</td><td><span class="sev high">high</span></td><td>/checkout.html</td><td>Form #checkout-form accepts invalid email: &quot;not-an-email&quot;</td></tr>
+<tr><td>✅ Fixed</td><td><span class="sev low">low</span></td><td>/checkout.html</td><td>Form #checkout-form accepts invalid email: &quot;jane.doe@bad&quot;</td></tr>
+<tr><td>✅ Fixed</td><td><span class="sev high">high</span></td><td>/index.html</td><td>Broken link &quot;Contact us&quot; → /contacts.html (HTTP 404)</td></tr>
+</table></div></div></body></html>

@@ -1,0 +1,625 @@
+{
+  "name": "1-before-fix",
+  "url": "http://127.0.0.1:64306/index.html",
+  "started": "2026-10-15T14:20:43",
+  "duration_s": 153.1,
+  "ai": "pollinations (openai)",
+  "ai_calls": 5,
+  "pages": [
+    "/index.html",
+    "/shop.html",
+    "/cart.html",
+    "/checkout.html",
+    "/contact.html"
+  ],
+  "findings": [
+    {
+      "type": "js-error",
+      "severity": "high",
+      "page": "/shop.html",
+      "key": "search:/shop.html",
+      "title": "Search does not work — submitting it throws a JavaScript error",
+      "element": "<form id=\"search-form\" role=\"search\">\n      <input type=\"search\" id=\"search\" name=\"search\" placeholder=\"Search title or author\" aria-label=\"Search books\">\n      <button class=\"btn\" type=\"submit\">Search</button>\n    </form>",
+      "details": {
+        "errors": [
+          "Uncaught TypeError: Cannot read properties of undefined (reading 'toLowerCase')\n    at http://127.0.0.1:64306/js/shop.js:9:29\n    at Array.filter (<anonymous>)"
+        ],
+        "search_term": "Silent",
+        "results_changed": false
+      },
+      "steps": [
+        "Open /shop.html",
+        "Type \"Silent\" into the search box",
+        "Press the search button"
+      ],
+      "screenshots": [
+        {
+          "file": "shots/01.jpg",
+          "caption": "After searching"
+        }
+      ],
+      "id": "F1",
+      "ai": {
+        "explanation": "`renderBooks()` uses `b.name` when filtering by the search term, but the BOOKS data objects use a `title` field. When `b.name` is undefined, calling `.toLowerCase()` throws a TypeError, preventing the search form from working. Visitors see a JavaScript error and no search results, which blocks their ability to find books based on title or author.",
+        "likely_cause": "Mixed property names: the code expects a `name` property, yet the data provides a `title` property (and the sorting logic already refers to `b.title`). The missing property causes the filter to fail.",
+        "suggested_fix": "Use the same property name consistently across the dataset and the logic. Update the filter to reference `b.title` (or update the data to include a `name` field). Also ensure `query` is defined and trimmed before use.",
+        "code_fix": "function renderBooks() {\n  const query = document.getElementById(\"search\").value.trim().toLowerCase();\n  const genre = document.getElementById(\"genre\").value;\n  const sort = document.getElementById(\"sort\").value;\n  let list = BOOKS.filter(b =>\n    (genre === \"all\" || b.genre === genre) &&\n    (query === \"\" || b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query))\n  );\n  if (sort === \"price-asc\") list.sort((a, b) => a.price - b.price);\n  if (sort === \"price-desc\") list.sort((a, b) => b.price - a.price);\n  if (sort === \"title\") list.sort((a, b) => a.title.localeCompare(b.title));\n  /* render the list... */\n}",
+        "source": "pollinations (openai)"
+      }
+    },
+    {
+      "type": "calculation",
+      "severity": "high",
+      "page": "/cart.html",
+      "key": "math:/cart.html",
+      "title": "Order total is wrong: shows $22.97, expected $17.98",
+      "details": {
+        "amounts": {
+          "Subtotal": 12.99,
+          "Shipping": 4.99,
+          "Total": 22.97
+        },
+        "expected_total": 17.98,
+        "confirmed_by_ai_review": "Total does not equal subtotal plus shipping"
+      },
+      "steps": [
+        "Add a product to the cart",
+        "Open /cart.html",
+        "Compare the subtotal + shipping with the total"
+      ],
+      "screenshots": [
+        {
+          "file": "shots/02.jpg",
+          "caption": "Order summary"
+        }
+      ],
+      "id": "F2",
+      "ai": {
+        "explanation": "The cart shows a total of $22.97, which is $4.99 higher than the expected $17.98. Visitors will be confused and may question the pricing, potentially reducing trust and sales. The bug appears because the shipping cost is added twice to the subtotal when calculating the total.",
+        "likely_cause": "The JavaScript calculation adds the shipping cost two times – once when setting the shipping element and again when computing the total. This double‑addition occurs because the script reads the shipping value from the DOM twice or mistakenly sums shipping with itself.",
+        "suggested_fix": "Modify the calculation function so that it adds the shipping cost only once. Ensure the shipping element contains the correct value before totaling, and guard against duplicate adds.",
+        "code_fix": "```js\n// Correct total calculation\nconst subtotalEl = document.getElementById('subtotal');\nconst shippingEl = document.getElementById('shipping');\nconst totalEl    = document.getElementById('total');\n\nconst subtotal = parseFloat(subtotalEl.textContent) || 0;\nconst shipping = parseFloat(shippingEl.textContent) || 4.99; // default flat fee\n\ntotalEl.textContent = (subtotal + shipping).toFixed(2);\n```",
+        "source": "pollinations (openai)"
+      }
+    },
+    {
+      "type": "form-accepts-invalid",
+      "severity": "high",
+      "page": "/checkout.html",
+      "key": "form-invalid:/checkout.html:#checkout-form:email:format",
+      "title": "Form #checkout-form accepts invalid email: \"not-an-email\"",
+      "element": "<form id=\"checkout-form\" class=\"form\" novalidate=\"\">\n    <div class=\"field\">\n      <label for=\"name\">Full name</label>\n      <input type=\"text\" id=\"name\" name=\"name\" autocomplete=\"name\">\n      <span class=\"error\" id=\"name-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"email\">Email</label>\n      <input type=\"text\" id=\"email\" name=\"email\" autocomplete=\"email\">\n      <span class=\"error\" id=\"email-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"phone\">Phone</label>\n      <input type=\"tel\" id=\"phone\" name=\"phone\" autocomplete=\"tel\">\n      <span class=\"error\" id=\"phone-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"address\">Street address</label>\n      <input type=\"text\" id=\"address\" name=\"address\" autocomplete=\"street-address\">\n      <span class=\"error\" id=\"address-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"zip\">ZIP code</label>\n      <input type=\"text\" id=\"zip\" name=\"zip\" inputmode=\"numeric\" maxlength=\"5\">\n      <span class=\"error\" id=\"zip-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"date\">Delivery date</label>\n      <input type=\"date\" id=\"date\" name=\"date\">\n      <span class=\"error\" id=\"date-error\" role=\"alert\"></span>\n    </div>\n    <p class=\"error\" id=\"form-message\" role=\"alert\"></p>\n    <button class=\"btn\" type=\"submit\">Place order</button>\n  </form>",
+      "details": {
+        "field": "email",
+        "invalid_value": "not-an-email",
+        "why_invalid": "missing @ and domain",
+        "case_source": "built-in rule",
+        "page_response": [
+          "Cart 0",
+          "Thank you, Jane Doe!",
+          "Your order has been placed. A confirmation email is on its way."
+        ]
+      },
+      "steps": [
+        "Open /checkout.html",
+        "Fill every field with valid data",
+        "Change email to \"not-an-email\"",
+        "Submit the form"
+      ],
+      "screenshots": [
+        {
+          "file": "shots/04.jpg",
+          "caption": "Invalid value typed in"
+        },
+        {
+          "file": "shots/05.jpg",
+          "caption": "Form was accepted"
+        }
+      ],
+      "id": "F3",
+      "ai": {
+        "explanation": "The checkout form lets users submit an email like \"not-an-email\" because the email field is an ordinary text input and the form has the \"novalidate\" attribute, so the browser’s built‑in validation is bypassed. This means visitors can place orders without a real email address, leading to lost communication and poor data quality.",
+        "likely_cause": "The email input is defined with type=\"text\" and the form uses novalidate; therefore the browser never checks for a valid email pattern.",
+        "suggested_fix": "Change the input type to \"email\", add the required attribute, and remove the novalidate flag on the form so the browser enforces email syntax before submission. Optionally add a pattern attribute for stricter checking.",
+        "code_fix": "<form id=\"checkout-form\" class=\"form\" action=\"/process-order\" method=\"post\">\n    <div class=\"field\">\n      <label for=\"name\">Full name</label>\n      <input type=\"text\" id=\"name\" name=\"name\" autocomplete=\"name\" required>\n    </div>\n    <div class=\"field\">\n      <label for=\"email\">Email</label>\n      <input type=\"email\" id=\"email\" name=\"email\" autocomplete=\"email\" required>\n      <span class=\"error\" id=\"email-error\" role=\"alert\"></span>\n    </div>\n    <!-- other fields -->\n</form>",
+        "source": "pollinations (openai)"
+      }
+    },
+    {
+      "type": "form-accepts-invalid",
+      "severity": "low",
+      "page": "/checkout.html",
+      "key": "form-invalid:/checkout.html:#checkout-form:email:ai",
+      "title": "Form #checkout-form accepts invalid email: \"jane.doe@bad\"",
+      "element": "<form id=\"checkout-form\" class=\"form\" novalidate=\"\">\n    <div class=\"field\">\n      <label for=\"name\">Full name</label>\n      <input type=\"text\" id=\"name\" name=\"name\" autocomplete=\"name\">\n      <span class=\"error\" id=\"name-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"email\">Email</label>\n      <input type=\"text\" id=\"email\" name=\"email\" autocomplete=\"email\">\n      <span class=\"error\" id=\"email-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"phone\">Phone</label>\n      <input type=\"tel\" id=\"phone\" name=\"phone\" autocomplete=\"tel\">\n      <span class=\"error\" id=\"phone-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"address\">Street address</label>\n      <input type=\"text\" id=\"address\" name=\"address\" autocomplete=\"street-address\">\n      <span class=\"error\" id=\"address-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"zip\">ZIP code</label>\n      <input type=\"text\" id=\"zip\" name=\"zip\" inputmode=\"numeric\" maxlength=\"5\">\n      <span class=\"error\" id=\"zip-error\" role=\"alert\"></span>\n    </div>\n    <div class=\"field\">\n      <label for=\"date\">Delivery date</label>\n      <input type=\"date\" id=\"date\" name=\"date\">\n      <span class=\"error\" id=\"date-error\" role=\"alert\"></span>\n    </div>\n    <p class=\"error\" id=\"form-message\" role=\"alert\"></p>\n    <button class=\"btn\" type=\"submit\">Place order</button>\n  </form>",
+      "details": {
+        "field": "email",
+        "invalid_value": "jane.doe@bad",
+        "why_invalid": "Missing domain part after dot.",
+        "case_source": "AI-suggested",
+        "page_response": [
+          "Cart 0",
+          "Thank you, Jane Doe!",
+          "Your order has been placed. A confirmation email is on its way."
+        ]
+      },
+      "steps": [
+        "Open /checkout.html",
+        "Fill every field with valid data",
+        "Change email to \"jane.doe@bad\"",
+        "Submit the form"
+      ],
+      "screenshots": [
+        {
+          "file": "shots/12.jpg",
+          "caption": "Invalid value typed in"
+        },
+        {
+          "file": "shots/13.jpg",
+          "caption": "Form was accepted"
+        }
+      ],
+      "id": "F4",
+      "ai": {
+        "explanation": "The checkout form accepts a malformed email (e.g., \"jane.doe@bad\") because the input field is defined as type=\"text\" and the form has the novalidate attribute, disabling all built‑in browser validation. Without HTML5 type or a pattern, the browser won’t reject invalid addresses, so users can submit incomplete or wrong emails, resulting in failed order confirmations and poor user experience.",
+        "likely_cause": "The <input> for email is type=\"text\" and the form carries novalidate=\"\", which turns off native validation. This allows any string, including an invalid email, to be submitted.",
+        "suggested_fix": "Change the email input to type=\"email\" (or add a pattern), include the required attribute for mandatory use, and remove or reconsider the novalidate attribute so the browser checks the value before submission. Optionally add custom JavaScript if more complex validation is needed.",
+        "code_fix": "<form id=\"checkout-form\" class=\"form\">\n  <div class=\"field\">\n    <label for=\"email\">Email</label>\n    <input type=\"email\" id=\"email\" name=\"email\" required autocomplete=\"email\">\n    <span class=\"error\" id=\"email-error\" role=\"alert\"></span>\n  </div>\n  <!-- other fields -->\n</form>",
+        "source": "pollinations (openai)"
+      }
+    },
+    {
+      "type": "broken-link",
+      "severity": "high",
+      "page": "/index.html",
+      "key": "broken-link:/contacts.html",
+      "title": "Broken link \"Contact us\" → /contacts.html (HTTP 404)",
+      "element": "<a href=\"contacts.html\">Contact us</a>",
+      "details": {
+        "href": "contacts.html",
+        "status": 404,
+        "found_on": [
+          "/index.html"
+        ],
+        "existing_pages": [
+          "/cart.html",
+          "/checkout.html",
+          "/contact.html",
+          "/index.html",
+          "/shop.html"
+        ]
+      },
+      "steps": [
+        "Open /index.html",
+        "Click the link \"Contact us\""
+      ],
+      "screenshots": [
+        {
+          "file": "shots/23.jpg",
+          "caption": "Link \"Contact us\" on /index.html"
+        },
+        {
+          "file": "shots/24.jpg",
+          "caption": "What the visitor gets: HTTP 404"
+        }
+      ],
+      "id": "F5",
+      "ai": {
+        "explanation": "The anchor points to '/contacts.html', which does not exist on the site; it returns a 404 error, leaving visitors unable to reach the intended contact form. A broken link hampers navigation and can hurt user satisfaction and search engine indexing.",
+        "likely_cause": "Misspelled or incorrect href: the existing page is called 'contact.html', but the link mistakenly uses 'contacts.html'.",
+        "suggested_fix": "Change the hyperlink to use the correct file name 'contact.html' (or the proper URL path).",
+        "code_fix": "<p><a href=\"shop.html\">Browse books</a><a href=\"contact.html\">Contact us</a><a href=\"index.html#top-picks\">Top picks</a></p>",
+        "source": "pollinations (openai)"
+      }
+    }
+  ],
+  "log": [
+    {
+      "page": "/index.html",
+      "check": "page loads",
+      "target": "/index.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "no JS errors on load",
+      "target": "/index.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/index.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/index.html",
+      "check": "buttons",
+      "target": "none outside forms",
+      "result": "skip",
+      "note": ""
+    },
+    {
+      "page": "/shop.html",
+      "check": "page loads",
+      "target": "/shop.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/shop.html",
+      "check": "no JS errors on load",
+      "target": "/shop.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/shop.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "select \"Filter by genre\"",
+      "result": "pass",
+      "note": "2 DOM change(s)"
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "select \"Sort books\"",
+      "result": "pass",
+      "note": "2 DOM change(s)"
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "button \"Add to cart\" #1",
+      "result": "pass",
+      "note": "2 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "button \"Add to cart\" #2",
+      "result": "pass",
+      "note": "2 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/shop.html",
+      "check": "form",
+      "target": "search #search-form with \"Silent\"",
+      "result": "FAIL",
+      "note": "Uncaught TypeError: Cannot read properties of undefined (reading 'toLowerCase')\n    at htt"
+    },
+    {
+      "page": "/cart.html",
+      "check": "page loads",
+      "target": "/cart.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/cart.html",
+      "check": "no JS errors on load",
+      "target": "/cart.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/cart.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/cart.html",
+      "check": "totals add up",
+      "target": "Subtotal $12.99 + Shipping $4.99 = Total $22.97",
+      "result": "FAIL",
+      "note": "expected $17.98"
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"−\"",
+      "result": "pass",
+      "note": "3 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"+\"",
+      "result": "pass",
+      "note": "6 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"Remove\"",
+      "result": "pass",
+      "note": "3 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"Clear cart\"",
+      "result": "pass",
+      "note": "3 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "page loads",
+      "target": "/checkout.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "no JS errors on load",
+      "target": "/checkout.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/checkout.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/checkout.html",
+      "check": "buttons",
+      "target": "none outside forms",
+      "result": "skip",
+      "note": ""
+    },
+    {
+      "page": "/checkout.html",
+      "check": "form",
+      "target": "#checkout-form with valid data",
+      "result": "pass",
+      "note": "accepted"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: name = \"\"",
+      "result": "pass",
+      "note": "Please enter your full name."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: email = \"not-an-email\"",
+      "result": "FAIL",
+      "note": "form accepted it"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: email = \"\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: phone = \"call me maybe\"",
+      "result": "pass",
+      "note": "Phone number must contain 7–15 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: address = \"\"",
+      "result": "pass",
+      "note": "Please enter your street address."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: zip = \"ABCDE\"",
+      "result": "pass",
+      "note": "ZIP code must be exactly 5 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: date = \"2026-10-12\"",
+      "result": "pass",
+      "note": "Delivery date must be in the future."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: name = \"12345\"",
+      "result": "pass",
+      "note": "Please enter your full name."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: email = \"jane.doe@bad\"",
+      "result": "FAIL",
+      "note": "form accepted it"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: phone = \"ABC-DEF-GHIJK\"",
+      "result": "pass",
+      "note": "Phone number must contain 7–15 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: zip = \"1234\"",
+      "result": "pass",
+      "note": "ZIP code must be exactly 5 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: date = \"2026-02-29\"",
+      "result": "pass",
+      "note": "the input field refuses this value"
+    },
+    {
+      "page": "/contact.html",
+      "check": "page loads",
+      "target": "/contact.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/contact.html",
+      "check": "no JS errors on load",
+      "target": "/contact.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/contact.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/contact.html",
+      "check": "buttons",
+      "target": "none outside forms",
+      "result": "skip",
+      "note": ""
+    },
+    {
+      "page": "/contact.html",
+      "check": "form",
+      "target": "#contact-form with valid data",
+      "result": "pass",
+      "note": "accepted"
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cname = \"\"",
+      "result": "pass",
+      "note": "Please tell us your name."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cemail = \"not-an-email\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cemail = \"\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: message = \"\"",
+      "result": "pass",
+      "note": "Message must be at least 10 characters."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: message = \"Hi\"",
+      "result": "pass",
+      "note": "Message must be at least 10 characters."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cname = \"<script>alert('XSS')</script>\"",
+      "result": "pass",
+      "note": "Please tell us your name."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cemail = \"invalid-email\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/contacts.html",
+      "check": "page loads",
+      "target": "/contacts.html",
+      "result": "FAIL",
+      "note": "HTTP 404"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "index.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "shop.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "cart.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "checkout.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "contact.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "contacts.html",
+      "result": "FAIL",
+      "note": "HTTP 404"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "index.html#top-picks",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "AI content review",
+      "target": "5 page(s)",
+      "result": "FAIL",
+      "note": "1 verified issue(s)"
+    }
+  ],
+  "video": "test-run.webm"
+}

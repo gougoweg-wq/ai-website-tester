@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact · Page &amp; Pine Books</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">📚 Page &amp; Pine</a>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="cart.html">Cart <span class="badge" id="cart-count">0</span></a></li>
+      <li><a href="checkout.html">Checkout</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h1>Contact us</h1>
+  <div class="two-col">
+    <div>
+      <form id="contact-form" class="form" novalidate>
+    <div class="field">
+      <label for="cname">Your name</label>
+      <input type="text" id="cname" name="cname">
+      <span class="error" id="cname-error" role="alert"></span>
+    </div>
+    <div class="field">
+      <label for="cemail">Email</label>
+      <input type="email" id="cemail" name="cemail">
+      <span class="error" id="cemail-error" role="alert"></span>
+    </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5"></textarea>
+          <span class="error" id="message-error" role="alert"></span>
+        </div>
+        <button class="btn" type="submit">Send message</button>
+      </form>
+      <div id="contact-done" class="success hidden"><h2>Message sent!</h2><p>We usually reply within one business day.</p></div>
+    </div>
+    <div class="faq">
+      <h2>FAQ</h2>
+      <details><summary>How much is shipping?</summary><p>A flat $4.99 per order.</p></details>
+      <details><summary>Can I return a book?</summary><p>Yes, within 30 days in original condition.</p></details>
+      <details><summary>Where are you located?</summary><p>12 Pine Street, Booktown.</p></details>
+    </div>
+  </div>
+</main>
+<footer>
+  <p>© 2026 Page &amp; Pine Books · Student project</p>
+  <p><a href="shop.html">Browse books</a><a href="contact.html">Contact us</a><a href="index.html#top-picks">Top picks</a></p>
+</footer>
+<script src="js/cart.js"></script>
+<script src="js/contact.js"></script>
+</body>
+</html>

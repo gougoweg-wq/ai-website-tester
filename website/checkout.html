@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout · Page &amp; Pine Books</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">📚 Page &amp; Pine</a>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="cart.html">Cart <span class="badge" id="cart-count">0</span></a></li>
+      <li><a href="checkout.html">Checkout</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h1>Checkout</h1>
+  <p>Order: <strong id="order-summary"></strong></p>
+  <form id="checkout-form" class="form" novalidate>
+    <div class="field">
+      <label for="name">Full name</label>
+      <input type="text" id="name" name="name" autocomplete="name">
+      <span class="error" id="name-error" role="alert"></span>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" autocomplete="email">
+      <span class="error" id="email-error" role="alert"></span>
+    </div>
+    <div class="field">
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" autocomplete="tel">
+      <span class="error" id="phone-error" role="alert"></span>
+    </div>
+    <div class="field">
+      <label for="address">Street address</label>
+      <input type="text" id="address" name="address" autocomplete="street-address">
+      <span class="error" id="address-error" role="alert"></span>
+    </div>
+    <div class="field">
+      <label for="zip">ZIP code</label>
+      <input type="text" id="zip" name="zip" inputmode="numeric" maxlength="5">
+      <span class="error" id="zip-error" role="alert"></span>
+    </div>
+    <div class="field">
+      <label for="date">Delivery date</label>
+      <input type="date" id="date" name="date">
+      <span class="error" id="date-error" role="alert"></span>
+    </div>
+    <p class="error" id="form-message" role="alert"></p>
+    <button class="btn" type="submit">Place order</button>
+  </form>
+  <div id="order-done" class="success hidden">
+    <h2>Thank you, <span id="order-name"></span>!</h2>
+    <p>Your order has been placed. A confirmation email is on its way.</p>
+  </div>
+</main>
+<footer>
+  <p>© 2026 Page &amp; Pine Books · Student project</p>
+  <p><a href="shop.html">Browse books</a><a href="contact.html">Contact us</a><a href="index.html#top-picks">Top picks</a></p>
+</footer>
+<script src="js/cart.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>

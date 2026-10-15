@@ -1,0 +1,411 @@
+{
+  "name": "2-after-fix",
+  "url": "http://127.0.0.1:50886/index.html",
+  "started": "2026-10-15T14:36:58",
+  "duration_s": 455.2,
+  "ai": "pollinations (openai)",
+  "ai_calls": 6,
+  "pages": [
+    "/index.html",
+    "/shop.html",
+    "/cart.html",
+    "/checkout.html",
+    "/contact.html"
+  ],
+  "findings": [],
+  "log": [
+    {
+      "page": "/index.html",
+      "check": "page loads",
+      "target": "/index.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "no JS errors on load",
+      "target": "/index.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/index.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/index.html",
+      "check": "buttons",
+      "target": "none outside forms",
+      "result": "skip",
+      "note": ""
+    },
+    {
+      "page": "/shop.html",
+      "check": "page loads",
+      "target": "/shop.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/shop.html",
+      "check": "no JS errors on load",
+      "target": "/shop.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/shop.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "select \"Filter by genre\"",
+      "result": "pass",
+      "note": "2 DOM change(s)"
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "select \"Sort books\"",
+      "result": "pass",
+      "note": "2 DOM change(s)"
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "button \"Add to cart\" #1",
+      "result": "pass",
+      "note": "2 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/shop.html",
+      "check": "click",
+      "target": "button \"Add to cart\" #2",
+      "result": "pass",
+      "note": "2 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/shop.html",
+      "check": "form",
+      "target": "search #search-form with \"Silent\"",
+      "result": "pass",
+      "note": "2 DOM change(s)"
+    },
+    {
+      "page": "/cart.html",
+      "check": "page loads",
+      "target": "/cart.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/cart.html",
+      "check": "no JS errors on load",
+      "target": "/cart.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/cart.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/cart.html",
+      "check": "totals add up",
+      "target": "Subtotal $12.99 + Shipping $4.99 = Total $17.98",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"−\"",
+      "result": "pass",
+      "note": "3 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"+\"",
+      "result": "pass",
+      "note": "6 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"Remove\"",
+      "result": "pass",
+      "note": "3 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/cart.html",
+      "check": "click",
+      "target": "button \"Clear cart\"",
+      "result": "pass",
+      "note": "3 DOM change(s), saved data changed"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "page loads",
+      "target": "/checkout.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "no JS errors on load",
+      "target": "/checkout.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/checkout.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/checkout.html",
+      "check": "buttons",
+      "target": "none outside forms",
+      "result": "skip",
+      "note": ""
+    },
+    {
+      "page": "/checkout.html",
+      "check": "form",
+      "target": "#checkout-form with valid data",
+      "result": "pass",
+      "note": "accepted"
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: name = \"\"",
+      "result": "pass",
+      "note": "Please enter your full name."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: email = \"not-an-email\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: email = \"\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: phone = \"call me maybe\"",
+      "result": "pass",
+      "note": "Phone number must contain 7–15 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: address = \"\"",
+      "result": "pass",
+      "note": "Please enter your street address."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: zip = \"ABCDE\"",
+      "result": "pass",
+      "note": "ZIP code must be exactly 5 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: date = \"2026-10-12\"",
+      "result": "pass",
+      "note": "Delivery date must be in the future."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: name = \"12345\"",
+      "result": "pass",
+      "note": "Please enter your full name."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: email = \"jane.doe@bad\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: phone = \"ABC-DEF-GHIJK\"",
+      "result": "pass",
+      "note": "Phone number must contain 7–15 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: zip = \"1234\"",
+      "result": "pass",
+      "note": "ZIP code must be exactly 5 digits."
+    },
+    {
+      "page": "/checkout.html",
+      "check": "invalid input rejected",
+      "target": "#checkout-form: date = \"2026-02-29\"",
+      "result": "pass",
+      "note": "the input field refuses this value"
+    },
+    {
+      "page": "/contact.html",
+      "check": "page loads",
+      "target": "/contact.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/contact.html",
+      "check": "no JS errors on load",
+      "target": "/contact.html",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/contact.html",
+      "check": "images load",
+      "target": "0 image(s)",
+      "result": "pass",
+      "note": ""
+    },
+    {
+      "page": "/contact.html",
+      "check": "buttons",
+      "target": "none outside forms",
+      "result": "skip",
+      "note": ""
+    },
+    {
+      "page": "/contact.html",
+      "check": "form",
+      "target": "#contact-form with valid data",
+      "result": "pass",
+      "note": "accepted"
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cname = \"\"",
+      "result": "pass",
+      "note": "Please tell us your name."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cemail = \"not-an-email\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cemail = \"\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: message = \"\"",
+      "result": "pass",
+      "note": "Message must be at least 10 characters."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: message = \"Hi\"",
+      "result": "pass",
+      "note": "Message must be at least 10 characters."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cname = \"<script>alert('XSS')</script>\"",
+      "result": "pass",
+      "note": "Please tell us your name."
+    },
+    {
+      "page": "/contact.html",
+      "check": "invalid input rejected",
+      "target": "#contact-form: cemail = \"invalid-email\"",
+      "result": "pass",
+      "note": "Please enter a valid email address."
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "index.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "shop.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "cart.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "checkout.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "contact.html",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "link",
+      "target": "index.html#top-picks",
+      "result": "pass",
+      "note": "HTTP 200"
+    },
+    {
+      "page": "/index.html",
+      "check": "AI content review",
+      "target": "5 page(s)",
+      "result": "pass",
+      "note": "AI unavailable"
+    }
+  ],
+  "video": "test-run.webm"
+}
